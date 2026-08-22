@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS access_logs (
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    payload TEXT NOT NULL
+);

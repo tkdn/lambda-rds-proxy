@@ -1,0 +1,13 @@
+# cp terraform.tfvars.example terraform.tfvars で複製し、必要に応じて値を調整する
+
+aws_region   = "ap-northeast-1"
+project_name = "lambda-rds-proxy"
+
+# vpc_cidr             = "10.42.0.0/16"
+# availability_zones   = ["ap-northeast-1a", "ap-northeast-1c"]
+# db_name              = "pinningtest"
+# db_master_username   = "pinningtest_admin"
+# db_instance_class    = "db.t4g.medium"
+# db_engine_version    = null # nullの場合はAWSのデフォルトを使用
+# max_conn_lifetime_after2 = "30s"
+# lambda_architecture  = "arm64"
