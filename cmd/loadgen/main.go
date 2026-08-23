@@ -52,9 +52,9 @@ func run(functionName string, count, concurrency int, outPath string) (allSuccee
 
 	out := io.Writer(os.Stdout)
 	if outPath != "" {
-		f, err := os.Create(outPath)
-		if err != nil {
-			return false, fmt.Errorf("failed to create output file: %w", err)
+		f, createErr := os.Create(outPath)
+		if createErr != nil {
+			return false, fmt.Errorf("failed to create output file: %w", createErr)
 		}
 		defer func() {
 			if closeErr := f.Close(); closeErr != nil && err == nil {
