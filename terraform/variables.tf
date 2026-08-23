@@ -57,3 +57,9 @@ variable "lambda_architecture" {
   type        = string
   default     = "arm64"
 }
+
+variable "log_retention_days" {
+  description = "CloudWatch LogsのLambdaロググループ保持日数"
+  type        = number
+  default     = 14
+}

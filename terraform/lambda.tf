@@ -5,6 +5,34 @@ locals {
   cluster_database_url = "postgres://${var.db_master_username}:${random_password.db_master.result}@${aws_rds_cluster.this.endpoint}:5432/${var.db_name}"
 }
 
+# Lambdaが初回実行時に自動作成するロググループ(/aws/lambda/<function_name>)は
+# Terraformの管理外になり、terraform destroyでは削除されずに残る。
+# ここで明示的にリソース化し、destroyで確実に削除されるようにする。
+resource "aws_cloudwatch_log_group" "pinning_before" {
+  name              = "/aws/lambda/${var.project_name}-pinning-before"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "pinning_after_1a" {
+  name              = "/aws/lambda/${var.project_name}-pinning-after-1a"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "pinning_after_1b" {
+  name              = "/aws/lambda/${var.project_name}-pinning-after-1b"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "pinning_after_2" {
+  name              = "/aws/lambda/${var.project_name}-pinning-after-2"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_cloudwatch_log_group" "migrator" {
+  name              = "/aws/lambda/${var.project_name}-migrator"
+  retention_in_days = var.log_retention_days
+}
+
 resource "aws_lambda_function" "pinning_before" {
   function_name = "${var.project_name}-pinning-before"
   role          = aws_iam_role.lambda_exec.arn
@@ -26,6 +54,8 @@ resource "aws_lambda_function" "pinning_before" {
       EXEC_MODE    = "cache_statement"
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.pinning_before]
 }
 
 resource "aws_lambda_function" "pinning_after_1a" {
@@ -49,6 +79,8 @@ resource "aws_lambda_function" "pinning_after_1a" {
       EXEC_MODE    = "simple_protocol"
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.pinning_after_1a]
 }
 
 resource "aws_lambda_function" "pinning_after_1b" {
@@ -72,6 +104,8 @@ resource "aws_lambda_function" "pinning_after_1b" {
       EXEC_MODE    = "describe_exec"
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.pinning_after_1b]
 }
 
 resource "aws_lambda_function" "pinning_after_2" {
@@ -96,6 +130,8 @@ resource "aws_lambda_function" "pinning_after_2" {
       MAX_CONN_LIFETIME = var.max_conn_lifetime_after2
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.pinning_after_2]
 }
 
 resource "aws_lambda_function" "migrator" {
@@ -119,4 +155,6 @@ resource "aws_lambda_function" "migrator" {
       DATABASE_URL = local.cluster_database_url
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.migrator]
 }
