@@ -57,7 +57,7 @@ resource "aws_lambda_function" "pinning_before" {
   }
 
   logging_config {
-    log_format = "Text"
+    log_format = "JSON"
     log_group  = aws_cloudwatch_log_group.pinning_before.name
   }
 }
@@ -85,7 +85,7 @@ resource "aws_lambda_function" "pinning_after_1a" {
   }
 
   logging_config {
-    log_format = "Text"
+    log_format = "JSON"
     log_group  = aws_cloudwatch_log_group.pinning_after_1a.name
   }
 }
@@ -113,7 +113,7 @@ resource "aws_lambda_function" "pinning_after_1b" {
   }
 
   logging_config {
-    log_format = "Text"
+    log_format = "JSON"
     log_group  = aws_cloudwatch_log_group.pinning_after_1b.name
   }
 }
@@ -142,7 +142,7 @@ resource "aws_lambda_function" "pinning_after_2" {
   }
 
   logging_config {
-    log_format = "Text"
+    log_format = "JSON"
     log_group  = aws_cloudwatch_log_group.pinning_after_2.name
   }
 }
@@ -170,7 +170,7 @@ resource "aws_lambda_function" "migrator" {
   }
 
   logging_config {
-    log_format = "Text"
+    log_format = "JSON"
     log_group  = aws_cloudwatch_log_group.migrator.name
   }
 }
