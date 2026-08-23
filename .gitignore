@@ -45,3 +45,6 @@ terraform/*.tfplan
 
 # loadgen output
 results-*.jsonl
+
+# scratch files (PR drafts, etc.)
+/tmp/
