@@ -1,0 +1,648 @@
+{
+    "Metrics": [
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "AvailabilityPercentage",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READ_ONLY"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "AvailabilityPercentage",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnections",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsInSetup",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsNoTLS",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsTLS",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryRequestsTLS",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionRequests",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsSetupSucceeded",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsSetupSucceeded",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryDatabaseResponseLatency",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryDatabaseResponseLatency",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsBorrowRequests",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryResponseLatency",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsBorrowLatency",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionRequestsWithTLS",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsBorrowLatency",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryDatabaseResponseLatency",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionRequests",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionRequests",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsSetupSucceeded",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsReceived",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsReceived",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsSetupSucceeded",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryDatabaseResponseLatency",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsSetupSucceeded",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionRequestsWithTLS",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryRequests",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryRequests",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryResponseLatency",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "QueryRequestsTLS",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnections",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnections",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnections",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsWithTLS",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "MaxDatabaseConnectionsAllowed",
+            "Dimensions": [
+                {
+                    "Name": "Target",
+                    "Value": "db:tf-f7ee7ed47c360dc0c85ff47c25"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsWithTLS",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsWithTLS",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "MaxDatabaseConnectionsAllowed",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "MaxDatabaseConnectionsAllowed",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READWRITE"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnectionsWithTLS",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READ_ONLY"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "DatabaseConnections",
+            "Dimensions": [
+                {
+                    "Name": "TargetRole",
+                    "Value": "READ_ONLY"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                },
+                {
+                    "Name": "TargetGroup",
+                    "Value": "default"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnections",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsTLS",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsClosed",
+            "Dimensions": [
+                {
+                    "Name": "EndpointName",
+                    "Value": "default"
+                },
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        },
+        {
+            "Namespace": "AWS/RDS",
+            "MetricName": "ClientConnectionsClosed",
+            "Dimensions": [
+                {
+                    "Name": "ProxyName",
+                    "Value": "lambda-rds-proxy"
+                }
+            ]
+        }
+    ]
+}
