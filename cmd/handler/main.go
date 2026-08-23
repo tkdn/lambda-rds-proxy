@@ -13,35 +13,37 @@ import (
 	"github.com/tkdn/lambda-rds-proxy/handler"
 )
 
-// Lambda実行環境(コンテナ)のウォーム状態での再利用を前提に、init()で1回だけ
-// Poolを生成する。ハンドラー呼び出しごとに作り直すと、RDS Proxy越しの
-// 接続確立パターンが変わりピン留め観測条件が崩れる。
-var h *handler.Handler
-
-func init() {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-
+// buildHandler は環境変数からPoolを構築しHandlerを返す。Lambda実行環境
+// (コンテナ)のウォーム状態での再利用を前提に、mainから1回だけ呼び出す。
+// ハンドラー呼び出しごとに作り直すと、RDS Proxy越しの接続確立パターンが
+// 変わりピン留め観測条件が崩れる。
+func buildHandler(ctx context.Context, logger *slog.Logger) (*handler.Handler, error) {
 	cfg, err := config.LoadFromEnv()
 	if err != nil {
-		logger.Error("failed to load config", slog.String("error", err.Error()))
-		os.Exit(1)
+		return nil, err
 	}
 
 	poolCfg, err := dbconn.BuildPoolConfig(cfg)
 	if err != nil {
-		logger.Error("failed to build pool config", slog.String("error", err.Error()))
-		os.Exit(1)
+		return nil, err
 	}
 
-	pool, err := pgxpool.NewWithConfig(context.Background(), poolCfg)
+	pool, err := pgxpool.NewWithConfig(ctx, poolCfg)
 	if err != nil {
-		logger.Error("failed to create pool", slog.String("error", err.Error()))
-		os.Exit(1)
+		return nil, err
 	}
 
-	h = handler.New(pool, cfg.ExecMode, logger)
+	return handler.New(pool, cfg.ExecMode, logger), nil
 }
 
 func main() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+
+	h, err := buildHandler(context.Background(), logger)
+	if err != nil {
+		logger.Error("failed to build handler", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
 	lambda.Start(h.Invoke)
 }

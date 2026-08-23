@@ -16,11 +16,11 @@ func BuildPoolConfig(cfg config.Config) (*pgxpool.Config, error) {
 	}
 
 	switch cfg.ExecMode {
-	case "cache_statement":
+	case config.ExecModeCacheStatement:
 		poolCfg.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeCacheStatement
-	case "simple_protocol":
+	case config.ExecModeSimpleProtocol:
 		poolCfg.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
-	case "describe_exec":
+	case config.ExecModeDescribeExec:
 		poolCfg.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeDescribeExec
 	default:
 		return nil, fmt.Errorf("unknown EXEC_MODE: %q", cfg.ExecMode)

@@ -25,7 +25,7 @@ func handleRequest(ctx context.Context, _ json.RawMessage) (response, error) {
 		return response{}, fmt.Errorf("DATABASE_URL is required")
 	}
 
-	// RDS Proxyを経由せずAuroraクラスターエンドポイントへ直接接続する(lambda.tf参照)。
+	// RDS Proxyを経由せずAuroraクラスターエンドポイントへ直接接続する。
 	// 単発のDDL適用のみが目的でウォームスタート間の接続再利用は不要なため、
 	// pgxpoolではなくpgx.Connectの単発接続を使う。
 	conn, err := pgx.Connect(ctx, databaseURL)

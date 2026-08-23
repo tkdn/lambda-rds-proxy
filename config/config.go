@@ -6,19 +6,36 @@ import (
 	"time"
 )
 
+// ExecMode はpgx.QueryExecModeへ対応するEXEC_MODE環境変数の値。
+// migratorはEXEC_MODEを設定しないため、空文字列(ExecModeUnset)も許容する。
+type ExecMode string
+
+const (
+	ExecModeUnset          ExecMode = ""
+	ExecModeCacheStatement ExecMode = "cache_statement"
+	ExecModeSimpleProtocol ExecMode = "simple_protocol"
+	ExecModeDescribeExec   ExecMode = "describe_exec"
+)
+
 type Config struct {
 	DatabaseURL     string
-	ExecMode        string
+	ExecMode        ExecMode
 	MaxConnLifetime time.Duration
 }
 
 func LoadFromEnv() (Config, error) {
 	cfg := Config{
 		DatabaseURL: os.Getenv("DATABASE_URL"),
-		ExecMode:    os.Getenv("EXEC_MODE"),
+		ExecMode:    ExecMode(os.Getenv("EXEC_MODE")),
 	}
 	if cfg.DatabaseURL == "" {
 		return Config{}, fmt.Errorf("DATABASE_URL is required")
+	}
+
+	switch cfg.ExecMode {
+	case ExecModeUnset, ExecModeCacheStatement, ExecModeSimpleProtocol, ExecModeDescribeExec:
+	default:
+		return Config{}, fmt.Errorf("unknown EXEC_MODE: %q", cfg.ExecMode)
 	}
 
 	if raw := os.Getenv("MAX_CONN_LIFETIME"); raw != "" {

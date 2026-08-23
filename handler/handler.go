@@ -5,20 +5,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"uuid"
 
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"github.com/tkdn/lambda-rds-proxy/config"
 	"github.com/tkdn/lambda-rds-proxy/db/sqlc"
 )
 
 type Handler struct {
 	pool     *pgxpool.Pool
-	execMode string
+	execMode config.ExecMode
 	logger   *slog.Logger
 }
 
-func New(pool *pgxpool.Pool, execMode string, logger *slog.Logger) *Handler {
+func New(pool *pgxpool.Pool, execMode config.ExecMode, logger *slog.Logger) *Handler {
 	return &Handler{pool: pool, execMode: execMode, logger: logger}
 }
 
@@ -29,9 +30,9 @@ type Response struct {
 }
 
 func (h *Handler) Invoke(ctx context.Context, _ json.RawMessage) (Response, error) {
-	invocationID := uuid.NewString()
+	invocationID := uuid.New().String()
 	logger := h.logger.With(
-		slog.String("exec_mode", h.execMode),
+		slog.String("exec_mode", string(h.execMode)),
 		slog.String("invocation_id", invocationID),
 	)
 
