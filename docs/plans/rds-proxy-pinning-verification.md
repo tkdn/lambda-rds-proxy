@@ -147,6 +147,8 @@ build-loadgen:
 
 Terraformの`aws_lambda_function`はビルド済みzipを`filename`+`source_code_hash = filebase64sha256(...)`で参照するだけとし、Goビルド自体はTerraformの管轄に含めない。
 
+コードのみを更新する場合、現状は`make build-{handler,migrator}` → `terraform apply`（zipのハッシュ変化を検知して`UpdateFunctionCode`相当が走る）という流れで、追加のデプロイ専用ツールは使わない。インフラ定義とコードのバージョンをTerraform管理下に一本化する狙いを優先したためで、頻繁なコード更新サイクルが発生するようになった場合は、[lambroll](https://github.com/fujiwara/lambroll)のようなLambda専用デプロイツールを部分的に導入し、コード更新だけTerraformの`plan`/`apply`を経ずに素早く反映する選択肢もある。ただしその場合、Terraformの`aws_lambda_function`リソースとコードの実体がズレないよう運用上の取り決め（例えばTerraform側は初回作成のみを担当し、以降の更新はlambroll側に委ねる、あるいは`lifecycle.ignore_changes`で`filename`/`source_code_hash`をTerraformの差分検知対象から外す）が必要になる。
+
 ## go.mod / sqlc
 
 単一モジュール（`module github.com/tkdn/lambda-rds-proxy`）。`cmd/handler`、`cmd/migrator`、`cmd/loadgen`（エントリポイント）と`config`、`dbconn`、`handler`、`loadgen`、`db/sqlc`（ライブラリパッケージ）は同一モジュール内で共存する。
