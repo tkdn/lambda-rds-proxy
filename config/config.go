@@ -7,11 +7,11 @@ import (
 )
 
 // ExecMode はpgx.QueryExecModeへ対応するEXEC_MODE環境変数の値。
-// migratorはEXEC_MODEを設定しないため、空文字列(ExecModeUnset)も許容する。
+// LoadFromEnvはhandlerからのみ呼ばれる(migratorはDATABASE_URLを直接読み、
+// このパッケージを経由しない)ため、3つの実値のみを許容する。
 type ExecMode string
 
 const (
-	ExecModeUnset          ExecMode = ""
 	ExecModeCacheStatement ExecMode = "cache_statement"
 	ExecModeSimpleProtocol ExecMode = "simple_protocol"
 	ExecModeDescribeExec   ExecMode = "describe_exec"
@@ -33,7 +33,7 @@ func LoadFromEnv() (Config, error) {
 	}
 
 	switch cfg.ExecMode {
-	case ExecModeUnset, ExecModeCacheStatement, ExecModeSimpleProtocol, ExecModeDescribeExec:
+	case ExecModeCacheStatement, ExecModeSimpleProtocol, ExecModeDescribeExec:
 	default:
 		return Config{}, fmt.Errorf("unknown EXEC_MODE: %q", cfg.ExecMode)
 	}
