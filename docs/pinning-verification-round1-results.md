@@ -141,5 +141,3 @@ aws cloudwatch get-metric-statistics \
 `DatabaseConnectionsCurrentlyBorrowed`はメトリクス名として存在しないことが`list-metrics`の結果から判明したため、参考として空の結果を残す:
 
 → [docs/evidences/round1-cw-database-connections-currently-borrowed.json](evidences/round1-cw-database-connections-currently-borrowed.json)
-
-認証情報（AWSプロファイル/リージョン設定、Secrets Manager経由のDB認証情報等）は上記コマンド・証跡いずれにも含まれない。
