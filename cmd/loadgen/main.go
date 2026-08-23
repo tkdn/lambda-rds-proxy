@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
@@ -25,30 +26,39 @@ func main() {
 		os.Exit(1)
 	}
 
+	allSucceeded, err := run(*functionName, *count, *concurrency, *outPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+	if !allSucceeded {
+		os.Exit(1)
+	}
+}
+
+func run(functionName string, count, concurrency int, outPath string) (allSucceeded bool, err error) {
 	ctx := context.Background()
 	awsCfg, err := awsconfig.LoadDefaultConfig(ctx)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to load AWS config: %v\n", err)
-		os.Exit(1)
+		return false, fmt.Errorf("failed to load AWS config: %w", err)
 	}
 	client := lambda.NewFromConfig(awsCfg)
 
 	results := loadgen.Run(ctx, client, loadgen.InvokeConfig{
-		FunctionName: *functionName,
-		Count:        *count,
-		Concurrency:  *concurrency,
+		FunctionName: functionName,
+		Count:        count,
+		Concurrency:  concurrency,
 	})
 
-	out := os.Stdout
-	if *outPath != "" {
-		f, err := os.Create(*outPath)
+	out := io.Writer(os.Stdout)
+	if outPath != "" {
+		f, err := os.Create(outPath)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "failed to create output file: %v\n", err)
-			os.Exit(1)
+			return false, fmt.Errorf("failed to create output file: %w", err)
 		}
 		defer func() {
-			if err := f.Close(); err != nil {
-				fmt.Fprintf(os.Stderr, "failed to close output file: %v\n", err)
+			if closeErr := f.Close(); closeErr != nil && err == nil {
+				err = fmt.Errorf("failed to close output file: %w", closeErr)
 			}
 		}()
 		out = f
@@ -57,9 +67,8 @@ func main() {
 	encoder := json.NewEncoder(out)
 	successCount := 0
 	for _, r := range results {
-		if err := encoder.Encode(r); err != nil {
-			fmt.Fprintf(os.Stderr, "failed to encode result: %v\n", err)
-			os.Exit(1)
+		if encErr := encoder.Encode(r); encErr != nil {
+			return false, fmt.Errorf("failed to encode result: %w", encErr)
 		}
 		if r.Status == loadgen.StatusSuccess {
 			successCount++
@@ -67,4 +76,5 @@ func main() {
 	}
 
 	fmt.Fprintf(os.Stderr, "done: %d/%d succeeded\n", successCount, len(results))
+	return successCount == len(results), nil
 }
