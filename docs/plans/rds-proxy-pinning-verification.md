@@ -102,6 +102,12 @@ func BuildPoolConfig(cfg config.Config) (*pgxpool.Config, error) {
 
 `handler/handler.go`は`sqlc.New(pool)`で生成したクエリオブジェクトを使い、1回の呼び出しでINSERT（`InsertAccessLog`）→SELECT（`GetLatestAccessLog`）を実行する。生のSQL文字列を組み立てるコードパスは持たせず、SET文・一時テーブル・動的SQL生成は実装しない（スコープ外）。
 
+ログ出力は標準ライブラリ`log/slog`を使い、`slog.NewJSONHandler`でJSON形式に統一する。TerraformのLambda側`logging_config.log_format = "JSON"`（terraform/lambda.tf）と対応させ、CloudWatch Logs Insightsで`EXEC_MODE`ごとにフィルタ・分析できるようにする。少なくとも次の情報を構造化フィールドとして出力する。
+
+- `exec_mode`（環境変数`EXEC_MODE`の値。4パターンのどれで実行されたか）
+- リクエストごとの識別子（`invocation_id`等、loadgen CLI側の出力と突き合わせるため）
+- INSERT/SELECTそれぞれの実行結果・エラー有無
+
 ## DDL適用: 踏み台Lambda方式
 
 AuroraはVPC内リソースであり、ローカル端末から`psql`で直接到達できないため、DDL適用専用の踏み台Lambda（`cmd/migrator`）を用意する。
