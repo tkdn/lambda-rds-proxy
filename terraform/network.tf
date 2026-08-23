@@ -86,3 +86,17 @@ resource "aws_security_group_rule" "db_ingress_from_lambda" {
   source_security_group_id = aws_security_group.lambda.id
   description              = "Allow 5432 from Lambda to Aurora/RDS Proxy"
 }
+
+# RDS ProxyとAuroraは同じSGを共用しているが、Ingressルールは送信元が
+# 同じSGに属しているというだけでは自動的に許可されない(AWSデフォルトSGの
+# ような自己参照ルールはカスタムSGには存在しない)。RDS ProxyからAurora
+# バックエンドへの5432通信を許可する自己参照ルールを明示的に追加する。
+resource "aws_security_group_rule" "db_ingress_self" {
+  type                     = "ingress"
+  from_port                = 5432
+  to_port                  = 5432
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.db.id
+  source_security_group_id = aws_security_group.db.id
+  description              = "Allow 5432 within the db security group (RDS Proxy to Aurora)"
+}

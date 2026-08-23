@@ -98,9 +98,9 @@ func BuildPoolConfig(cfg config.Config) (*pgxpool.Config, error) {
 
 ## Lambdaハンドラーのコード構造
 
-`cmd/handler/main.go`は`init()`でpgxpool.Poolをパッケージグローバル変数として1回だけ生成する。Lambda実行環境（コンテナ）のウォーム状態での再利用が、RDS Proxy越しの接続確立パターンを安定させる前提条件になるため、ハンドラー呼び出しごとにPoolを作り直さない。
+`cmd/handler/main.go`は`buildHandler(ctx, logger)`という明示的な関数でpgxpool.Poolを1回だけ生成し、`main()`から呼び出してグローバル変数に保持する。Lambda実行環境（コンテナ）のウォーム状態での再利用が、RDS Proxy越しの接続確立パターンを安定させる前提条件になるため、ハンドラー呼び出しごとにPoolを作り直さない。
 
-`handler/handler.go`は`sqlc.New(pool)`で生成したクエリオブジェクトを使い、1回の呼び出しでINSERT（`InsertAccessLog`）→SELECT（`GetLatestAccessLog`）を実行する。生のSQL文字列を組み立てるコードパスは持たせず、SET文・一時テーブル・動的SQL生成は実装しない（スコープ外）。
+`handler/handler.go`は`pgxpool.Pool.Begin`/`Commit`で明示的に1トランザクションを開始し、`sqlc.New(tx)`で生成したクエリオブジェクトを使って、1回の呼び出しでINSERT（`InsertAccessLog`）→SELECT（`GetLatestAccessLog`）を実行する。トランザクション境界自体はピン留めの検証対象（`pgx.QueryExecMode`）とは独立した軸だが、「1回の呼び出しでINSERT→SELECTを実行する」という記述への意味論的な忠実性と、RDS Proxyの多重化（コネクション再利用）判定がトランザクション単位で行われる点（AWS公式ドキュメント: "RDS Proxy can reuse a connection at the conclusion of each transaction"）を踏まえ、事前条件として明示する。生のSQL文字列を組み立てるコードパスは持たせず、SET文・一時テーブル・動的SQL生成は実装しない（スコープ外）。
 
 ログ出力は標準ライブラリ`log/slog`を使い、`slog.NewJSONHandler`でJSON形式に統一する。TerraformのLambda側`logging_config.log_format = "JSON"`（terraform/lambda.tf）と対応させ、CloudWatch Logs Insightsで`EXEC_MODE`ごとにフィルタ・分析できるようにする。少なくとも次の情報を構造化フィールドとして出力する。
 
