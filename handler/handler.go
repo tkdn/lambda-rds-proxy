@@ -3,10 +3,12 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"uuid"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/tkdn/lambda-rds-proxy/config"
@@ -36,7 +38,18 @@ func (h *Handler) Invoke(ctx context.Context, _ json.RawMessage) (Response, erro
 		slog.String("invocation_id", invocationID),
 	)
 
-	queries := sqlc.New(h.pool)
+	tx, err := h.pool.Begin(ctx)
+	if err != nil {
+		logger.ErrorContext(ctx, "begin transaction failed", slog.String("error", err.Error()))
+		return Response{}, fmt.Errorf("begin transaction: %w", err)
+	}
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil && !errors.Is(err, pgx.ErrTxClosed) {
+			logger.ErrorContext(ctx, "rollback failed", slog.String("error", err.Error()))
+		}
+	}()
+
+	queries := sqlc.New(tx)
 	payload := fmt.Sprintf("invocation-%s", invocationID)
 
 	inserted, err := queries.InsertAccessLog(ctx, payload)
@@ -52,6 +65,11 @@ func (h *Handler) Invoke(ctx context.Context, _ json.RawMessage) (Response, erro
 		return Response{}, fmt.Errorf("select latest access log: %w", err)
 	}
 	logger.InfoContext(ctx, "select succeeded", slog.Int64("latest_id", latest.ID))
+
+	if err := tx.Commit(ctx); err != nil {
+		logger.ErrorContext(ctx, "commit failed", slog.String("error", err.Error()))
+		return Response{}, fmt.Errorf("commit transaction: %w", err)
+	}
 
 	return Response{
 		InvocationID:  invocationID,
