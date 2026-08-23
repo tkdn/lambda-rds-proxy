@@ -7,7 +7,8 @@ locals {
 
 # Lambdaが初回実行時に自動作成するロググループ(/aws/lambda/<function_name>)は
 # Terraformの管理外になり、terraform destroyでは削除されずに残る。
-# ここで明示的にリソース化し、destroyで確実に削除されるようにする。
+# ここで明示的にリソース化し、各aws_lambda_functionのlogging_config.log_groupで
+# 参照することで、命名規則の一致だけに頼らず依存関係を明示する。
 resource "aws_cloudwatch_log_group" "pinning_before" {
   name              = "/aws/lambda/${var.project_name}-pinning-before"
   retention_in_days = var.log_retention_days
@@ -55,7 +56,10 @@ resource "aws_lambda_function" "pinning_before" {
     }
   }
 
-  depends_on = [aws_cloudwatch_log_group.pinning_before]
+  logging_config {
+    log_format = "Text"
+    log_group  = aws_cloudwatch_log_group.pinning_before.name
+  }
 }
 
 resource "aws_lambda_function" "pinning_after_1a" {
@@ -80,7 +84,10 @@ resource "aws_lambda_function" "pinning_after_1a" {
     }
   }
 
-  depends_on = [aws_cloudwatch_log_group.pinning_after_1a]
+  logging_config {
+    log_format = "Text"
+    log_group  = aws_cloudwatch_log_group.pinning_after_1a.name
+  }
 }
 
 resource "aws_lambda_function" "pinning_after_1b" {
@@ -105,7 +112,10 @@ resource "aws_lambda_function" "pinning_after_1b" {
     }
   }
 
-  depends_on = [aws_cloudwatch_log_group.pinning_after_1b]
+  logging_config {
+    log_format = "Text"
+    log_group  = aws_cloudwatch_log_group.pinning_after_1b.name
+  }
 }
 
 resource "aws_lambda_function" "pinning_after_2" {
@@ -131,7 +141,10 @@ resource "aws_lambda_function" "pinning_after_2" {
     }
   }
 
-  depends_on = [aws_cloudwatch_log_group.pinning_after_2]
+  logging_config {
+    log_format = "Text"
+    log_group  = aws_cloudwatch_log_group.pinning_after_2.name
+  }
 }
 
 resource "aws_lambda_function" "migrator" {
@@ -156,5 +169,8 @@ resource "aws_lambda_function" "migrator" {
     }
   }
 
-  depends_on = [aws_cloudwatch_log_group.migrator]
+  logging_config {
+    log_format = "Text"
+    log_group  = aws_cloudwatch_log_group.migrator.name
+  }
 }
