@@ -25,6 +25,14 @@ func main() {
 		fmt.Fprintln(os.Stderr, "-function is required")
 		os.Exit(1)
 	}
+	if *count <= 0 {
+		fmt.Fprintln(os.Stderr, "-n must be greater than 0")
+		os.Exit(1)
+	}
+	if *concurrency <= 0 {
+		fmt.Fprintln(os.Stderr, "-c must be greater than 0")
+		os.Exit(1)
+	}
 
 	allSucceeded, err := run(*functionName, *count, *concurrency, *outPath)
 	if err != nil {
